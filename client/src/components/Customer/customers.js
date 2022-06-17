@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import {connect } from 'react-redux';
 import {getCustomers} from '../../store/actions/customer'
 import './customers.css';
+import Cards from '../Cards';
 
 class Customers extends Component {
 
@@ -20,15 +21,12 @@ class Customers extends Component {
   }
 
   render() {
-
     return (
       <div>
-        <h2>Customers</h2>
-        <ul>
+        <h2>Recipes</h2>
         {this.props.customers.map(customer =>
-          <li key={customer.id}>{customer.firstName} {customer.lastName}</li>
+          <Cards title = {customer.title} ingredients = {customer.ingredients} instructions = {customer.instructions}/>
         )}
-        </ul>
       </div>
     );
   }

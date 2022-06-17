@@ -4,6 +4,7 @@ import logo from './logo.svg'
 import './App.css'
 import store from './store'
 import Customers from './components/Customer/customers'
+import Create from './components/Customer/Form/Form'
 
 class App extends Component {
 
@@ -17,6 +18,7 @@ class App extends Component {
           </header>
           <Customers/>
         </div>
+        <Create/>
       </Provider>
     )
   }

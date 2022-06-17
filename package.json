@@ -12,10 +12,12 @@
   },
   "author": "Brad Traversy & Gregory Assasie",
   "license": "MIT",
-  "devDependencies": {},
   "dependencies": {
+    "axios": "^0.27.2",
     "concurrently": "^4.1.1",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.1",
+    "uuid": "^8.3.2"
   }
 }
