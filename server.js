@@ -23,10 +23,13 @@ app.get('/api/customers', (req, res) => {
 
 let books = [];
 app.post('/create', function(req, res) {
+  let ingredientsArr = req.body.bookTitle.split(',');
+  let instructionsArr = req.body.bookAuthor.split(',');
+  console.log(ingredientsArr);
   const newBook = {
     BookID: req.body.bookID,
-    Title: req.body.bookTitle,
-    Author: req.body.bookAuthor,
+    Title: ingredientsArr,
+    Author: instructionsArr,
   };
 
   books.push(newBook);
