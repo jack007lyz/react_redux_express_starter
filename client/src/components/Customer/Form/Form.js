@@ -18,6 +18,39 @@ class Create extends Component {
     };
   }
 
+  handleDelete = (item) => {
+    const newRecipes = this.state.allRecipes.filter(recipe => recipe.id !== item.id);
+    // axios.delete(`http://localhost:5000/api/customers/${item.id}`)
+      // .then((res) => {
+      //     this.setState({
+      //       allRecipes: res
+      //     });
+      // });
+      const sendDelete = async () => {
+        axios.delete('http://localhost:5000/api/customers/'+JSON.stringify(item.id), {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          data: {
+            deleteID: String(item.id)
+          }
+        })
+          .then((res) => {
+            this.setState({
+              allRecipes: res.data
+            });
+        });
+        // const res = await axios.delete(`http://localhost:5000/api/customers/${JSON.stringify(item.id)}`)
+        // .then((res) =>{
+        //   console.log(res.data);
+        //   this.setState({allRecipes: res.data});
+        // })
+      }
+
+
+      sendDelete();  
+  }
+
   handleInputChange = e => {
     this.setState({
       [e.target.name]: e.target.value,
@@ -88,8 +121,14 @@ class Create extends Component {
             </div>
           </form>
           <div className = "Cards">
-            {this.state.allRecipes.map((numbers) =>
-              <Cards title = {numbers.BookID} ingredients = {numbers.Title} instructions = {numbers.Author}/>
+            {this.state.allRecipes.map((numbers) =>{
+              return(
+                <div>
+                <Cards key = {numbers.id} title = {numbers.BookID} ingredients = {numbers.Title} instructions = {numbers.Author}/>
+                <button onClick={()=> this.handleDelete(numbers)}>Delete</button>
+                </div>
+              );
+            }
             )}
           </div>
         </div>
