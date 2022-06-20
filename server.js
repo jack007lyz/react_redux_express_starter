@@ -2,7 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-
+var favouriteRecipes = [];
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -16,49 +16,56 @@ app.use(express.urlencoded({ extended: false }));
 
 app.get('/api/customers', (req, res) => {
   const customers = [
-    {title: 'Title1', ingredients: ['test1'], instructions: ['noodle']},
-    {title: 'Title2', ingredients: ['test2'], instructions: ['noodle']},
-    {title: 'Title3', ingredients: ['test3'], instructions: ['noodle']},
+    {title: 'Title1', ingredients: ['test1'], instructions: ['noodle'], id: Date.now(),},
+    {title: 'Title2', ingredients: ['test2'], instructions: ['noodle'], id: Date.now(),},
+    {title: 'Title3', ingredients: ['test3'], instructions: ['noodle'], id: Date.now(),},
   ];
 
   res.json(customers);
 });
 
-var books = [];
+var serverRecipes = [];
 app.post('/create', function(req, res) {
-  let ingredientsArr = req.body.bookTitle.split(',');
-  let instructionsArr = req.body.bookAuthor.split(',');
+  if(req.body.recipeTitle && req.body.recipeIngredients && req.body.recipeInstructions) {
+  let ingredientsArr = req.body.recipeIngredients.split(',');
+  let instructionsArr = req.body.recipeInstructions.split(',');
   // console.log(ingredientsArr);
-  const newBook = {
-    BookID: req.body.bookID,
-    Title: ingredientsArr,
-    Author: instructionsArr,
+  const newRecipes = {
+    title: req.body.recipeTitle,
+    ingredients: ingredientsArr,
+    instructions: instructionsArr,
     id: String(Date.now()),
   };
 
-  books.push(newBook);
-  // console.log(books);
-  return res.json(books);
+  serverRecipes.push(newRecipes);
+  // console.log(serverRecipes);
+  return res.json(serverRecipes);
+  }
+  else {
+    return res.status(400).json({error: 'Missing required fields'});
+  }
 });
 
-app.get('/api/cards', (req, res) => {
-  const customers = [
-    {id: 1, firstName: 'John', lastName: 'Doe'},
-  ];
-
-  res.json(customers);
+app.post('/favourite', function(req, res) {
+  const newFavourite = {
+    title: req.body.recipe.label,
+    url: req.body.recipe.url,
+  };
+  favouriteRecipes.push(newFavourite);
+  console.log(favouriteRecipes);
 });
+
 
 app.delete('/api/customers/:id', (req, res) => {
-  // delete in books array according to id
+  // delete in array according to id
   let id = String(req.body.deleteID);
-  for(let i = 0; i < books.length; i++) {
-    if(books[i].id === id) {
-      books.splice(i, 1);
+  for(let i = 0; i < serverRecipes.length; i++) {
+    if(serverRecipes[i].id === id) {
+      serverRecipes.splice(i, 1);
     }
   }
-  console.log(books);
-  return res.json(books);
+  console.log(serverRecipes);
+  return res.json(serverRecipes);
 });
 
 

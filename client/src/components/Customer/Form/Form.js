@@ -1,8 +1,7 @@
 import React, { Component, useState } from 'react';
 import axios from 'axios';
 import Cards from '../../Cards';
-import { v4 as uuidv4 } from 'uuid';
-import { compose } from 'redux';
+import './Form.css'
 
 class Create extends Component {
 
@@ -10,9 +9,9 @@ class Create extends Component {
     super(props);
     var recipes;
     this.state = {
-      bookID: '',
-      bookTitle: '',
-      bookAuthor: '',
+      recipeTitle: '',
+      recipeIngredients: '',
+      recipeInstructions: '',
       allRecipes:[],
       ingredients: [],
     };
@@ -59,23 +58,26 @@ class Create extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    const { bookID, bookTitle, bookAuthor } = this.state;
+    const { recipeTitle, recipeIngredients, recipeInstructions } = this.state;
 
     const book = {
-      bookID,
-      bookTitle,
-      bookAuthor,
+      recipeTitle,
+      recipeIngredients,
+      recipeInstructions,
     };
 
     const sendPost = async () => {
       const res = await axios.post('http://localhost:5000/create', book)
       .then((res) =>{
         this.setState({allRecipes: res.data});
-      })
+      }).catch((err) => {
+        alert("Empty input");
+      }
+      );
       console.log(this.state.allRecipes);
     }
     sendPost();
-      // this.setState(this.allRecipes.concat(<Cards key = {uuidv4()} title = {this.recipes.bookID} ingredients = {this.recipes.bookAuthor} instructions = {this.recipes.bookTitle}/>)); 
+      // this.setState(this.allRecipes.concat(<Cards key = {uuidv4()} title = {this.recipes.recipeTitle} ingredients = {this.recipes.recipeInstructions} instructions = {this.recipes.recipeIngredients}/>)); 
   };
 
   render() {
@@ -85,33 +87,39 @@ class Create extends Component {
         <div className="container" align="center">
           <form onSubmit={this.handleSubmit}>
             <div style={{ width: '30%' }} className="form-group">
+            <label className="labels">Recipe Title:
               <input
                 type="text"
-                className="form-control"
-                name="bookID"
+                className="inputFieldClass"
+                name="recipeTitle"
                 placeholder="Title"
                 onChange={this.handleInputChange}
               />
+            </label>
             </div>
             <br />
             <div style={{ width: '30%' }} className="form-group">
+            <label className="labels">Ingredients:
               <input
                 type="text"
-                className="form-control"
-                name="bookTitle"
+                className="inputFieldClass"
+                name="recipeIngredients"
                 placeholder="Ingredients"
                 onChange={this.handleInputChange}
               />
+            </label>
             </div>
             <br />
             <div style={{ width: '30%' }} className="form-group">
+            <label className="labels">Instructions:
               <input
                 type="text"
-                className="form-control"
-                name="bookAuthor"
+                className="inputFieldClass"
+                name="recipeInstructions"
                 placeholder="Instructions"
                 onChange={this.handleInputChange}
               />
+            </label>
             </div>
             <br />
             <div style={{ width: '30%' }}>
@@ -123,8 +131,8 @@ class Create extends Component {
           <div className = "Cards">
             {this.state.allRecipes.map((numbers) =>{
               return(
-                <div>
-                <Cards key = {numbers.id} title = {numbers.BookID} ingredients = {numbers.Title} instructions = {numbers.Author}/>
+                <div key = {numbers.id + 10086}>
+                <Cards key = {numbers.id} title = {numbers.title} ingredients = {numbers.ingredients} instructions = {numbers.instructions}/>
                 <button onClick={()=> this.handleDelete(numbers)}>Delete</button>
                 </div>
               );

@@ -1,2 +1,2 @@
-export const GET_CUSTOMERS = "GET_CUSTOMERS";
+export const GET_RECIPES = "GET_RECIPES";
 export const UPDATE_CUSTOMER = "REMOVE_CUSTOMER";

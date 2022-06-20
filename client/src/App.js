@@ -5,6 +5,8 @@ import './App.css'
 import store from './store'
 import Customers from './components/Customer/customers'
 import Create from './components/Customer/Form/Form'
+import SearchRecipe from './components/SearchRecipe'
+import Recipe from './components/Recipe'
 
 class App extends Component {
 
@@ -19,6 +21,7 @@ class App extends Component {
           <Customers/>
         </div>
         <Create/>
+        <SearchRecipe/>
       </Provider>
     )
   }
